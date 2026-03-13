@@ -1,6 +1,6 @@
-const bcrypt = require('bcryptjs');
-const prisma = require('../../prismaClient');
-const gerarTokens = require('../../utils/gerarTokens');
+import bcrypt from 'bcryptjs';
+import { buscarPorEmail, atualizarRefreshToken } from '../../models/usuarioModel.js';
+import gerarTokens from '../../utils/gerarTokens.js';
 
 const login = async (req, res) => {
   const { email, senha } = req.body;
@@ -9,7 +9,7 @@ const login = async (req, res) => {
     return res.status(400).json({ erro: 'Email e senha são obrigatórios' });
   }
 
-  const usuario = await prisma.usuario.findUnique({ where: { email } });
+  const usuario = await buscarPorEmail(email);
   if (!usuario) {
     return res.status(401).json({ erro: 'Credenciais inválidas' });
   }
@@ -21,12 +21,9 @@ const login = async (req, res) => {
 
   const { accessToken, refreshToken } = gerarTokens(usuario.id);
 
-  await prisma.usuario.update({
-    where: { id: usuario.id },
-    data: { refreshToken },
-  });
+  await atualizarRefreshToken(usuario.id, refreshToken);
 
   return res.json({ accessToken, refreshToken });
 };
 
-module.exports = login;
+export default login;

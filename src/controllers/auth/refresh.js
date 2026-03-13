@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
-const prisma = require('../../prismaClient');
-const gerarTokens = require('../../utils/gerarTokens');
+import jwt from 'jsonwebtoken';
+import { buscarPorId, atualizarRefreshToken } from '../../models/usuarioModel.js';
+import gerarTokens from '../../utils/gerarTokens.js';
 
 const refresh = async (req, res) => {
   const { refreshToken } = req.body;
@@ -16,19 +16,16 @@ const refresh = async (req, res) => {
     return res.status(401).json({ erro: 'Refresh token inválido ou expirado' });
   }
 
-  const usuario = await prisma.usuario.findUnique({ where: { id: payload.id } });
+  const usuario = await buscarPorId(payload.id);
   if (!usuario || usuario.refreshToken !== refreshToken) {
     return res.status(401).json({ erro: 'Refresh token inválido' });
   }
 
   const tokens = gerarTokens(usuario.id);
 
-  await prisma.usuario.update({
-    where: { id: usuario.id },
-    data: { refreshToken: tokens.refreshToken },
-  });
+  await atualizarRefreshToken(usuario.id, tokens.refreshToken);
 
   return res.json(tokens);
 };
 
-module.exports = refresh;
+export default refresh;

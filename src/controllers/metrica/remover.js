@@ -1,15 +1,15 @@
-const prisma = require('../../prismaClient');
+import { buscarPorId, remover as removerMetrica } from '../../models/metricaModel.js';
 
 const remover = async (req, res) => {
   const { id } = req.params;
 
-  const existente = await prisma.metrica.findUnique({ where: { id: Number(id) } });
+  const existente = await buscarPorId(Number(id));
   if (!existente) {
     return res.status(404).json({ erro: 'Métrica não encontrada' });
   }
 
-  await prisma.metrica.delete({ where: { id: Number(id) } });
+  await removerMetrica(Number(id));
   return res.status(204).send();
 };
 
-module.exports = remover;
+export default remover;

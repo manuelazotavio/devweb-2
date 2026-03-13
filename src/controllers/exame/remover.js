@@ -1,18 +1,16 @@
-const prisma = require('../../prismaClient');
+import { buscarPorIdEUsuario, remover as removerExame } from '../../models/exameModel.js';
 
 const remover = async (req, res) => {
   const { id } = req.params;
 
-  const existente = await prisma.exame.findFirst({
-    where: { id: Number(id), usuarioId: req.usuario.id },
-  });
+  const existente = await buscarPorIdEUsuario(Number(id), req.usuario.id);
 
   if (!existente) {
     return res.status(404).json({ erro: 'Exame não encontrado' });
   }
 
-  await prisma.exame.delete({ where: { id: Number(id) } });
+  await removerExame(Number(id));
   return res.status(204).send();
 };
 
-module.exports = remover;
+export default remover;

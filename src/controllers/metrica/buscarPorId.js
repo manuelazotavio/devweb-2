@@ -1,9 +1,9 @@
-const prisma = require('../../prismaClient');
+import { buscarPorId as buscarMetricaPorId } from '../../models/metricaModel.js';
 
 const buscarPorId = async (req, res) => {
   const { id } = req.params;
 
-  const metrica = await prisma.metrica.findUnique({ where: { id: Number(id) } });
+  const metrica = await buscarMetricaPorId(Number(id));
 
   if (!metrica) {
     return res.status(404).json({ erro: 'Métrica não encontrada' });
@@ -12,4 +12,4 @@ const buscarPorId = async (req, res) => {
   return res.json(metrica);
 };
 
-module.exports = buscarPorId;
+export default buscarPorId;

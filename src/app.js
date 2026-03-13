@@ -1,7 +1,7 @@
-const express = require('express');
-const authRoutes = require('./routes/authRoutes');
-const metricaRoutes = require('./routes/metricaRoutes');
-const exameRoutes = require('./routes/exameRoutes');
+import express from 'express';
+import authRoutes from './routes/authRoutes.js';
+import metricaRoutes from './routes/metricaRoutes.js';
+import exameRoutes from './routes/exameRoutes.js';
 
 const app = express();
 
@@ -15,4 +15,4 @@ app.use((err, req, res, next) => {
   res.status(500).json({ erro: 'Erro interno do servidor' });
 });
 
-module.exports = app;
+export default app;

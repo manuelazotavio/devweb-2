@@ -1,8 +1,8 @@
-const prisma = require('../../prismaClient');
+import { listarTodas } from '../../models/metricaModel.js';
 
 const listar = async (req, res) => {
-  const metricas = await prisma.metrica.findMany();
+  const metricas = await listarTodas();
   return res.json(metricas);
 };
 
-module.exports = listar;
+export default listar;

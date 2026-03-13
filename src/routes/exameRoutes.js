@@ -1,13 +1,13 @@
-const express = require('express');
-const { autenticar } = require('../middleware/authMiddleware');
-const listar = require('../controllers/exame/listar');
-const buscarPorId = require('../controllers/exame/buscarPorId');
-const criar = require('../controllers/exame/criar');
-const atualizar = require('../controllers/exame/atualizar');
-const remover = require('../controllers/exame/remover');
-const historico = require('../controllers/exame/historico');
+import { Router } from 'express';
+import { autenticar } from '../middleware/authMiddleware.js';
+import listar from '../controllers/exame/listar.js';
+import buscarPorId from '../controllers/exame/buscarPorId.js';
+import criar from '../controllers/exame/criar.js';
+import atualizar from '../controllers/exame/atualizar.js';
+import remover from '../controllers/exame/remover.js';
+import historico from '../controllers/exame/historico.js';
 
-const router = express.Router();
+const router = Router();
 
 router.use(autenticar);
 
@@ -18,4 +18,4 @@ router.post('/', criar);
 router.put('/:id', atualizar);
 router.delete('/:id', remover);
 
-module.exports = router;
+export default router;

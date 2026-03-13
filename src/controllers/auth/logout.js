@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const prisma = require('../../prismaClient');
+import jwt from 'jsonwebtoken';
+import { atualizarRefreshToken } from '../../models/usuarioModel.js';
 
 const logout = async (req, res) => {
   const { refreshToken } = req.body;
@@ -15,12 +15,9 @@ const logout = async (req, res) => {
     return res.status(401).json({ erro: 'Refresh token inválido' });
   }
 
-  await prisma.usuario.update({
-    where: { id: payload.id },
-    data: { refreshToken: null },
-  });
+  await atualizarRefreshToken(payload.id, null);
 
   return res.json({ mensagem: 'Logout realizado com sucesso' });
 };
 
-module.exports = logout;
+export default logout;

@@ -1,12 +1,12 @@
-const express = require('express');
-const { autenticar } = require('../middleware/authMiddleware');
-const listar = require('../controllers/metrica/listar');
-const buscarPorId = require('../controllers/metrica/buscarPorId');
-const criar = require('../controllers/metrica/criar');
-const atualizar = require('../controllers/metrica/atualizar');
-const remover = require('../controllers/metrica/remover');
+import { Router } from 'express';
+import { autenticar } from '../middleware/authMiddleware.js';
+import listar from '../controllers/metrica/listar.js';
+import buscarPorId from '../controllers/metrica/buscarPorId.js';
+import criar from '../controllers/metrica/criar.js';
+import atualizar from '../controllers/metrica/atualizar.js';
+import remover from '../controllers/metrica/remover.js';
 
-const router = express.Router();
+const router = Router();
 
 router.use(autenticar);
 
@@ -16,4 +16,4 @@ router.post('/', criar);
 router.put('/:id', atualizar);
 router.delete('/:id', remover);
 
-module.exports = router;
+export default router;

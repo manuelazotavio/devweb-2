@@ -1,16 +1,9 @@
-const prisma = require('../../prismaClient');
+import { buscarPorIdEUsuario } from '../../models/exameModel.js';
 
 const buscarPorId = async (req, res) => {
   const { id } = req.params;
 
-  const exame = await prisma.exame.findFirst({
-    where: { id: Number(id), usuarioId: req.usuario.id },
-    include: {
-      metricas: {
-        include: { metrica: true },
-      },
-    },
-  });
+  const exame = await buscarPorIdEUsuario(Number(id), req.usuario.id);
 
   if (!exame) {
     return res.status(404).json({ erro: 'Exame não encontrado' });
@@ -19,4 +12,4 @@ const buscarPorId = async (req, res) => {
   return res.json(exame);
 };
 
-module.exports = buscarPorId;
+export default buscarPorId;
